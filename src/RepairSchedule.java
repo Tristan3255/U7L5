@@ -27,14 +27,15 @@ public class RepairSchedule
      */
     public boolean addRepair(int m, int b)
     {
-
-        for(int i = 0; i < schedule.size();i ++){
-            if(schedule.get(i) != new CarRepair(m,b)) {
-                schedule.add(new CarRepair(m, b));
-                return true;
+        for(int i = 0; i < schedule.size(); i++){
+            int mNum = schedule.get(i).getMechanicNum();
+            int bNum = schedule.get(i).getBayNum();
+            if(mNum == m || bNum == b){
+                return false;
             }
         }
-        return false;
+        schedule.add(new CarRepair(m,b));
+        return true;
     }
 
     /** Returns an ArrayList containing the mechanic identifiers of all available mechanics,
@@ -42,7 +43,16 @@ public class RepairSchedule
      */
     public ArrayList<Integer> availableMechanics()
     {
-        return new ArrayList<>();
+        ArrayList<Integer> available = new ArrayList<Integer>();
+        for(int i = 0; i < numberOfMechanics; i++){
+            available.add(i);
+
+        }
+        for(int i = 0; i < schedule.size(); i++){
+            available.remove(schedule.get(i).getMechanicNum());
+        }
+
+        return available;
     }
 
     /** Removes an element from schedule when a repair is complete. */
